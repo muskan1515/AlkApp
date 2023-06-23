@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "@material-ui/core": "^4.12.4"
+  },
+  "name": "alkapp",
+  "version": "1.0.0",
+  "description": "This is a client side view of alkApp",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muskan1515/AlkApp.git"
+  },
+  "author": "Muskan Kushwah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/muskan1515/AlkApp/issues"
+  },
+  "homepage": "https://github.com/muskan1515/AlkApp#readme"
+}
