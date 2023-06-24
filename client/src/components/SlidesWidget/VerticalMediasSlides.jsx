@@ -6,13 +6,23 @@ import { TextareaAutosize } from '@material-ui/core';
 let ans='';
 const propheight=900;
 
-const HeadingSlide=()=>{
+const VerticalMediasSlide=()=>{
 //props.height is going for box height
     
     const [elements,setElements]=useState([{
         id:1,
-        type:'text',
-        content:'Heading'
+        type:'media',
+        content:<ImageIcon/>
+    },
+    {
+        id:2,
+        type:'media',
+        content:<ImageIcon/>
+    },
+    {
+        id:3,
+        type:'media',
+        content:<ImageIcon/>
     }]);
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedWidget,setWidgets]=useState(null);
@@ -122,4 +132,4 @@ const HeadingSlide=()=>{
     );
 }
 
-export default HeadingSlide;
+export default VerticalMediasSlide;
