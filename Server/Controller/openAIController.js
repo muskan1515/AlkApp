@@ -25,6 +25,7 @@ exports.getImages=(req,res)=>{
 };
 
 exports.getTexts=(req,res)=>{
+  console.log(process.env.REACT_APP_API_KEY);
     const description=req.body.description;
     if (!configuration.apiKey) {
         console.log("error");
@@ -38,7 +39,6 @@ exports.getTexts=(req,res)=>{
       }).then(response=>{
         res.send(response.data.choices[0].text);
       }).catch(err=>{
-        console.log(err);
         res.status(400).send(err);
       });
 };
