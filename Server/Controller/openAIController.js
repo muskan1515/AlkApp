@@ -1,8 +1,9 @@
 const axios=require('axios');
 const {Configuration,OpenAIApi}=require('openai');
+const dotenv=require('dotenv').config();
 
 const configuration = new Configuration({
-    apiKey: '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',
+    apiKey: process.env.API_KEY,
   });
 const openai = new OpenAIApi(configuration);
 

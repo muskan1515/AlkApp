@@ -4,6 +4,7 @@ const bodyParser=require('body-parser');
 const {Connection} = require('./db/Connection');
 const authController=require('./Routes/Authetication');
 const openaiRoutes=require('./Routes/openAi');
+const dotenv=require('dotenv').config();
 
 const app=express();
 

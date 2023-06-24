@@ -1,5 +1,5 @@
 import axios from 'axios';
-const url='http://localhost:8080';
+const url=process.env.REACT_APP_BACKEND_HOST;
 
 export const getGoogleLogin=(data,setErrorText)=>{
     axios.post(`${url}/auth/GoogleLogin`,data).then(res=>{

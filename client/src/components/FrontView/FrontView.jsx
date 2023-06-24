@@ -26,6 +26,7 @@ const FrontView=(props)=>{
           },
         }}
       >
+      
       <Box sx={{ flexGrow: 1 ,
                  backgroundColor:'#010203'}}>
       <AppBar position="static" sx={{backgroundColor:'#010203'}}>

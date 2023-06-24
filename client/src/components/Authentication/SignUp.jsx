@@ -11,7 +11,7 @@ import { getSignup ,getGoogleSignup} from '../service/api';
 
 
 
-const url='http://localhost:3000/';
+const url=process.env.FRONTEND_HOST;
 
 const Login=(props)=>{
 

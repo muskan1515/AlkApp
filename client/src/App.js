@@ -10,9 +10,10 @@ import HomePage from './components/Home/HomePage';
 import Generator from './components/Generator/Generator';
 import HeadingMultiMediaHorizontalSlide from './components/SlidesWidget/HeadingMultiMediaHorizontalSlides';
 import HeadingMultiMediasSlide from './components/SlidesWidget/HeadingMultiMediasSlide';
+import CreatePPT from './components/CreatePPT/CreatePPT';
 
 
-const clientId = '246648691460-bsj1rub53iami1btvii0577h1on2je01.apps.googleusercontent.com';
+const clientId = process.env.REACT_APP_CLIENT_ID;
 function App() {
   return (
     <GoogleOAuthProvider clientId={clientId}>
@@ -22,8 +23,8 @@ function App() {
         <Route exact path='/SignUp' element={<SignUp/>}></Route>
         <Route exact path='/Login' element={<Login/>}></Route>
         <Route exact path='/Home' element={<HomePage/>}></Route>
-        <Route exact path='/Images' element={<Generator/>}></Route>
-        <Route exact path='/Heading' element={<HeadingMultiMediasSlide/>}></Route>
+        <Route exact path='/CreatePPT' element={<CreatePPT/>}></Route>
+        <Route exact path='/Generator' element={<Generator/>}></Route>
         <Route  path='/' element={<FrontView/>}></Route>  
         <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

@@ -10,7 +10,7 @@ import redcross from '../Images/redcross.jpg';
 import {getLogin,getGoogleLogin} from '../service/api';
 
 
-const url='http://localhost:3000/';
+const url=process.env.FRONTEND_HOST;
 
 const SignUp=(props)=>{
 

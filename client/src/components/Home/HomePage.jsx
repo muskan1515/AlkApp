@@ -14,7 +14,7 @@ const HomePage=(props)=>{
 
   const navigate=useNavigate();
   const redirectToCreatePage=()=>{
-    navigate('/Images');
+    navigate('/CreatePPT');
   }
     return (
         <Box
