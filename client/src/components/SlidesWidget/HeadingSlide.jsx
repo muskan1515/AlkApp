@@ -6,7 +6,7 @@ import { TextareaAutosize } from '@material-ui/core';
 let ans='';
 const propheight=900;
 
-const TitleSlide=()=>{
+const HeadingSlide=()=>{
 //props.height is going for box height
     
     const [elements,setElements]=useState([{
@@ -122,4 +122,4 @@ const TitleSlide=()=>{
     );
 }
 
-export default TitleSlide;
+export default HeadingSlide;
