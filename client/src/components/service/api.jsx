@@ -37,20 +37,18 @@ export const getLogin=(data,setErrorText)=>{
     });
 }
 
-export const getImages=(data,setImages)=>{
+export const getImages=(data,val)=>{
     axios.post(`${url}/openAI/Images`,data).then(res=>{
-        console.log(res);
-        setImages(res);
-
+        return res;
     }).
     catch(err=>{
             console.log(err);
     })
 }
 
-export const getText=(data)=>{
+export const getText=(data,setText)=>{
     axios.post(`${url}/openAI/Texts`,data).then(res=>{
-        console.log(res);
+        return res.data;
 
     }).
     catch(err=>{

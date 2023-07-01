@@ -6,10 +6,10 @@ import { TextareaAutosize } from '@material-ui/core';
 let ans='';
 const propheight=900;
 
-const HeadingandMediaSlide=()=>{
+const HeadingandMediaSlide=({updatedHeight,updatedWidth,content})=>{
 //props.height is going for box height
     
-    const [elements,setElements]=useState([{
+    const [elements,setElements]=useState(content?content:[{
         id:1,
         type:'text',
         content:'Heading'
@@ -86,10 +86,10 @@ const HeadingandMediaSlide=()=>{
     
 
     const showMember=()=>{
-        const width=100/elements.length;
+        const width=updatedWidth/elements.length;
         ans=elements.map((key,index)=>{
             if(key.type=='text'){
-                return <Box onContextMenu={(event)=>handleContextMenu(event,index)} sx={{width:`${width}%`,height:700,backgroundColor:'gray',display: 'flex',flexDirection:'column',
+                return <Box onContextMenu={(event)=>handleContextMenu(event,index)} sx={{width:`${width}%`,height:updatedHeight,backgroundColor:'gray',display: 'flex',flexDirection:'column',
                 justifyContent: 'center',
                 alignItems: 'center',borderStyle:'double' ,borderColor:'black'}} key={index}>
                 
@@ -99,11 +99,11 @@ const HeadingandMediaSlide=()=>{
                 </Box>
             }
             else{
-                return <Box onContextMenu={(event)=>handleContextMenu(event,index)} sx={{width:`${width}%`,height:700,backgroundColor:'#87CEFA',display: 'flex',flexDirection:'column',
+                return <Box onContextMenu={(event)=>handleContextMenu(event,index)} sx={{width:`${width}%`,height:updatedHeight,backgroundColor:'#87CEFA',display: 'flex',flexDirection:'column',
                 justifyContent: 'center',
                 alignItems: 'center',borderStyle:'double' ,borderColor:'black'}}  key={index}>
                    
-                    <ImageIcon sx={{width:'50%',height:'50%'}}/>
+                    <ImageIcon sx={{width:'40%',height:'40%'}}/>
                     </Box>
             }
         })
@@ -111,7 +111,7 @@ const HeadingandMediaSlide=()=>{
             
     }
     return (
-        <Box sx={{display:'flex',flexDirection:'row',width:'100%',height:700,backgroundColor:'#36454F'}}>
+        <Box sx={{display:'flex',flexDirection:'row',width:`${updatedWidth}`,height:updatedHeight,backgroundColor:'#36454F'}}>
         {showMember()}
         <Menu sx={{top:`${menuPosition.y}`,left:`${menuPosition.x}`}}
         anchorEl={anchorEl}

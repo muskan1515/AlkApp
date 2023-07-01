@@ -6,7 +6,7 @@ import { TextareaAutosize } from '@material-ui/core';
 let ans='';
 const propheight=900;
 
-const HeadingMultiMediasSlide=()=>{
+const HeadingMultiMediasSlide=({updatedHeight,updatedWidth,content})=>{
 //props.height is going for box height
     
     const [Upperelements,setUpperElements]=useState([{
@@ -125,10 +125,11 @@ const HeadingMultiMediasSlide=()=>{
     
 
     const showMemberLower=()=>{
-        const width=100/elements.length;
+        const width=updatedWidth/elements.length;
+        const hgt=updatedHeight/2+100;
         ans=elements.map((key,index)=>{
             if(key.type=='text'){
-                return <Box onContextMenu={(event)=>handleContextMenu(event,index,key.row)} sx={{width:`${width}%`,height:500,backgroundColor:'orange',display: 'flex',flexDirection:'column',
+                return <Box onContextMenu={(event)=>handleContextMenu(event,index,key.row)} sx={{width:`${width}%`,height:hgt,backgroundColor:'orange',display: 'flex',flexDirection:'column',
                 justifyContent: 'center',
                 alignItems: 'center',borderStyle:'double' ,borderColor:'black'}} key={index}>
                 
@@ -138,7 +139,7 @@ const HeadingMultiMediasSlide=()=>{
                 </Box>
             }
             else{
-                return <Box onContextMenu={(event)=>handleContextMenu(event,index,key.row)} sx={{width:`${width}%`,height:500,backgroundColor:'orange',display: 'flex',flexDirection:'column',
+                return <Box onContextMenu={(event)=>handleContextMenu(event,index,key.row)} sx={{width:`${width}%`,height:hgt,backgroundColor:'orange',display: 'flex',flexDirection:'column',
                 justifyContent: 'center',
                 alignItems: 'center',borderStyle:'double' ,borderColor:'black'}}  key={index}>
                    
@@ -149,10 +150,11 @@ const HeadingMultiMediasSlide=()=>{
         return ans;
     }
     const showMemberUpper=()=>{
-        const width=100/Upperelements.length;
+        const width=updatedWidth/Upperelements.length;
+        const hgt=updatedHeight/2+100;
         ans=Upperelements.map((key,index)=>{
             if(key.type=='text'){
-                return <Box onContextMenu={(event)=>handleContextMenu(event,index,key.row)} sx={{width:`${width}%`,height:600,backgroundColor:'gray',display: 'flex',flexDirection:'column',
+                return <Box onContextMenu={(event)=>handleContextMenu(event,index,key.row)} sx={{width:`${width}%`,height:hgt,backgroundColor:'gray',display: 'flex',flexDirection:'column',
                 justifyContent: 'center',
                 alignItems: 'center',borderStyle:'double' ,borderColor:'black'}} key={index}>
                 
@@ -162,7 +164,7 @@ const HeadingMultiMediasSlide=()=>{
                 </Box>
             }
             else{
-                return <Box onContextMenu={(event)=>handleContextMenu(event,index,key.row)} sx={{width:`${width}%`,height:600,backgroundColor:'gray',display: 'flex',flexDirection:'column',
+                return <Box onContextMenu={(event)=>handleContextMenu(event,index,key.row)} sx={{width:`${width}%`,height:hgt,backgroundColor:'gray',display: 'flex',flexDirection:'column',
                 justifyContent: 'center',
                 alignItems: 'center',borderStyle:'double' ,borderColor:'black'}}  key={index}>
                    
@@ -173,7 +175,7 @@ const HeadingMultiMediasSlide=()=>{
         return ans;
     }
     return (
-        <Box sx={{display:'flex',flexDirection:'column',width:'100%',height:'auto',backgroundColor:'#36454F'}}>
+        <Box sx={{display:'flex',flexDirection:'column',overflow:'auto',width:`${updatedWidth}%`,height:updatedHeight,backgroundColor:'#36454F'}}>
         <Box sx={{display:'flex',flexDirection:'row'}}>
         {showMemberUpper()}
         </Box>

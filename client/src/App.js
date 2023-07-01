@@ -11,6 +11,8 @@ import Generator from './components/Generator/Generator';
 import HeadingMultiMediaHorizontalSlide from './components/SlidesWidget/HeadingMultiMediaHorizontalSlides';
 import HeadingMultiMediasSlide from './components/SlidesWidget/HeadingMultiMediasSlide';
 import CreatePPT from './components/CreatePPT/CreatePPT';
+import TitleSlide from './components/SlidesWidget/TitleSlide';
+import { Backdrop } from '@mui/material';
 
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
@@ -23,8 +25,9 @@ function App() {
         <Route exact path='/SignUp' element={<SignUp/>}></Route>
         <Route exact path='/Login' element={<Login/>}></Route>
         <Route exact path='/Home' element={<HomePage/>}></Route>
+        
         <Route exact path='/CreatePPT' element={<CreatePPT/>}></Route>
-        <Route exact path='/Generator' element={<Generator/>}></Route>
+        <Route exact path='/backdrop' element={<Backdrop/>}></Route>
         <Route  path='/' element={<FrontView/>}></Route>  
         <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

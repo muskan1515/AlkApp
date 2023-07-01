@@ -6,10 +6,10 @@ import { TextareaAutosize } from '@material-ui/core';
 let ans='';
 const propheight=900;
 
-const HeadingSlide=()=>{
+const HeadingSlide=({updatedHeight,updatedWidth,content})=>{
 //props.height is going for box height
     
-    const [elements,setElements]=useState([{
+    const [elements,setElements]=useState(content?content:[{
         id:1,
         type:'text',
         content:'Heading'
@@ -24,7 +24,7 @@ const HeadingSlide=()=>{
         const updatedEle=temp.filter((key,index)=>{
             if(index!=idx)
              return true;
-        });
+        });   
         setElements(updatedEle);
         handleClose();
 
@@ -81,10 +81,10 @@ const HeadingSlide=()=>{
     
 
     const showMember=()=>{
-        const width=100/elements.length;
+        const width=updatedWidth/elements.length;
         ans=elements.map((key,index)=>{
             if(key.type=='text'){
-                return <Box onContextMenu={(event)=>handleContextMenu(event,index)} sx={{width:`${width}%`,height:700,backgroundColor:'gray',display: 'flex',flexDirection:'column',
+                return <Box onContextMenu={(event)=>handleContextMenu(event,index)} sx={{width:`${width}%`,height:updatedHeight,backgroundColor:'gray',display: 'flex',flexDirection:'column',
                 justifyContent: 'center',
                 alignItems: 'center',borderStyle:'double' ,borderColor:'black'}} key={index}>
                 
@@ -94,7 +94,7 @@ const HeadingSlide=()=>{
                 </Box>
             }
             else{
-                return <Box onContextMenu={(event)=>handleContextMenu(event,index)} sx={{width:`${width}%`,height:700,backgroundColor:'#87CEFA',display: 'flex',flexDirection:'column',
+                return <Box onContextMenu={(event)=>handleContextMenu(event,index)} sx={{width:`${width}%`,height:updatedHeight,backgroundColor:'#87CEFA',display: 'flex',flexDirection:'column',
                 justifyContent: 'center',
                 alignItems: 'center',borderStyle:'double' ,borderColor:'black'}}  key={index}>
                    
@@ -106,7 +106,7 @@ const HeadingSlide=()=>{
             
     }
     return (
-        <Box sx={{display:'flex',flexDirection:'row',width:'100%',height:700,backgroundColor:'#36454F'}}>
+        <Box sx={{display:'flex',flexDirection:'row',width:{updatedWidth},height:updatedHeight,backgroundColor:'#36454F'}}>
         {showMember()}
         <Menu sx={{top:`${menuPosition.y}`,left:`${menuPosition.x}`}}
         anchorEl={anchorEl}
