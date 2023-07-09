@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {useSelector,useDispatch} from 'react-redux'
 import { Box ,AppBar,IconButton,MenuList,Typography,Button,Toolbar,Menu,MenuItem} from "@mui/material"; 
 import AddIcon from '@mui/icons-material/Add';
 
@@ -9,60 +10,125 @@ import HeadingMultiMediaHorizontalSlide from "../SlidesWidget/HeadingMultiMediaH
 import HeadingMultiMediasSlide from "../SlidesWidget/HeadingMultiMediasSlide";
 import HeadingandMediaSlide from "../SlidesWidget/Heading&MediaSlide";
 import VerticalMediasSlide from "../SlidesWidget/VerticalMediasSlides";
+import { setSlideData } from "../../redux/reducers/slideSlice";
 
-import BackdropBox from '../helper/Backdrop';
-
-
-const Slideid=["Title","Heading","Media","HeadingMultiMedia","HeadingMultiMediaHor","HeadingandMedia","VertialMedia"];
 const CreatePPT=()=>{
+    
+    const Dispatch = useDispatch();
+    const data=useSelector(state=>state);
     const [anchorEl, setAnchorEl] = useState(null);
-    const [currentSlide,setCurrentSlide]=useState(<TitleSlide updatedHeight={600} updatedWidth={100}/>);
-    const [SlideId,setSlideid]=useState(null);
-    const [addtionalSideSlideCon,setSideSlideContent]=useState('');
-    const [addtionalSlideCon,setSlideContent]=useState('');
+    const [getData,setGetData]=useState(false);
     const [slides,setSlides]=useState([{
         id:1,
-        title:"Title",
+        title:<TitleSlide idx={1} updatedHeight={600} updatedWidth={100}  />,
         array:[]
     }]);
+    Dispatch(setSlideData({payload:slides}));
+    const [currentSlide,setCurrentSlide]=useState(<TitleSlide idx={1} updatedHeight={600} updatedWidth={100} slide={slides} />);
+    const [count,setCount]=useState(2);
+    
+   const [tempSlides,setTempSlide]=useState([1]);
+    const [sideSlides,setSideSlides]=useState([{
+        id:1,
+        data:<Box onClick={()=>{
+            const slidestemp=[...tempSlides];
+            slidestemp.push(1);
+            setTempSlide(slidestemp);}}><TitleSlide idx={1} updatedHeight={120} updatedWidth={100} /></Box>
+   }]);
+ 
+   useEffect(()=>{
+    const len=tempSlides.length;
+    const ele=tempSlides[len-1];
+    const temp=slides.map((key,index)=>{
+        if(key.id==ele){
+        setCurrentSlide(key.title);
+        return;}
+    })
+   },[tempSlides]);
 
-    const SlidesName=[
-        <TitleSlide updatedHeight={600} updatedWidth={100} {...addtionalSlideCon}/>,
-        <HeadingSlide updatedHeight={600} updatedWidth={100} {...addtionalSlideCon}/>,
-        <MediaSlide updatedHeight={600} updatedWidth={100} {...addtionalSlideCon}/>,
-        <HeadingMultiMediasSlide updatedHeight={600} updatedWidth={100} {...addtionalSlideCon}/>,
-        <HeadingMultiMediaHorizontalSlide updatedHeight={600} updatedWidth={100} {...addtionalSlideCon}/>,
-        <HeadingandMediaSlide updatedHeight={600} updatedWidth={100} {...addtionalSlideCon}/>,
-        <VerticalMediasSlide updatedHeight={600} updatedWidth={100} {...addtionalSlideCon}/>
-    ];
+//    useEffect(()=>{
+//     const data=useSelector(state=>state);
+//     const len=tempSlides.length;
+//     const idx=tempSlides[len-1];
+//     console.log(data[idx]);
+//     setGetData(false);
+//    },[getData===true]);
 
-    const SideSlidesName=[
-        <Box onClick={()=>updateMainSlide(0)} ><TitleSlide updatedHeight={120} updatedWidth={100} /></Box>,
-        <Box onClick={()=>updateMainSlide(1)} ><HeadingSlide updatedHeight={120} updatedWidth={100} /></Box>,
-        <Box onClick={()=>updateMainSlide(2)} ><MediaSlide updatedHeight={120} updatedWidth={100} /></Box>,
-        <Box onClick={()=>updateMainSlide(3)} ><HeadingMultiMediasSlide updatedHeight={120} updatedWidth={100} /></Box>,
-        <Box onClick={()=>updateMainSlide(4)} ><HeadingMultiMediaHorizontalSlide updatedHeight={120} updatedWidth={100} /></Box>,
-        <Box onClick={()=>updateMainSlide(5)} ><HeadingandMediaSlide updatedHeight={120} updatedWidth={100} /></Box>,
-        <Box onClick={()=>updateMainSlide(6)} ><VerticalMediasSlide updatedHeight={120} updatedWidth={100} /></Box>
-     ];
+    const getMainSlides=(idx,array)=>{ 
+        
+        if(idx==0)
+        return <TitleSlide  updatedHeight={600} updatedWidth={100} {...array} />
+        else if(idx==1)
+        return <HeadingSlide  updatedHeight={600} updatedWidth={100} {...array}/>
+        else if(idx==2)
+        return <MediaSlide  updatedHeight={600} updatedWidth={100} {...array}/>
+        else if(idx==3)
+        return <HeadingMultiMediasSlide  updatedHeight={600} updatedWidth={100} {...array}/>
+        else if(idx==4)
+        return <HeadingMultiMediaHorizontalSlide  updatedHeight={600} updatedWidth={100} {...array}/>
+        else if(idx==5)
+        return <HeadingandMediaSlide  updatedHeight={600} updatedWidth={100} {...array}/>
+        else
+        return <VerticalMediasSlide  updatedHeight={600} updatedWidth={100} {...array}/>
+    }
+
+    const onClickSideSlides=(idx)=>{
+        const slidestemp=[...tempSlides];
+        slidestemp.push(idx);
+        setTempSlide(slidestemp);
+        console.log(data);
+    }
+    
+    const getSideSlides=(idx)=>{ 
+        const key=count;
+        
+        
+        setCount(Number(key)+1); 
+
+        const slidestemp=[...tempSlides];
+        const slideProps = {
+            idx: key,
+            updatedHeight: 120,
+            updatedWidth: 100
+        };
+
+        if(idx==0)
+        return <Box onClick={()=>onClickSideSlides(key)}><TitleSlide {...slideProps} /></Box>
+        else if(idx==1)
+        return <Box onClick={()=>onClickSideSlides(key)}><HeadingSlide {...slideProps} /></Box>
+        else if(idx==2)
+        return <Box onClick={()=>onClickSideSlides(key)}><MediaSlide {...slideProps} /></Box>
+        else if(idx==3)
+        return <Box onClick={()=>onClickSideSlides(key)}><HeadingMultiMediasSlide {...slideProps} /></Box>
+        else if(idx==4)
+        return <Box onClick={()=>onClickSideSlides(key)}><HeadingMultiMediaHorizontalSlide {...slideProps} /></Box>
+        else if(idx==5)
+        return <Box onClick={()=>onClickSideSlides(key)}><HeadingandMediaSlide {...slideProps} /></Box>
+        else
+        return <Box onClick={()=>onClickSideSlides(key)}><VerticalMediasSlide {...slideProps} /></Box>
+    }
 
     const changeCurrentSlide=(value)=>{
-        const temp=SlidesName.filter((key,index)=>{
-            if(index==value-1)
-             return true;
-            
-        });
+        const temp=getMainSlides(value-1);
         const len=slides.length;
         const updatedSlides=[...slides];
+        const data=getMainSlides(value-1);
         updatedSlides.push({
             id:len+1,
-            title:Slideid[value-1],
+            title:data,
             array:[]
         });
         
         setSlides(updatedSlides);
         setCurrentSlide(temp);
-        setSlideid(value-1);
+        const oldSideSlides=[...sideSlides];
+        const tmp2=getSideSlides(value-1);
+        oldSideSlides.push({
+            id:len+1,
+            data:tmp2
+        })
+        setSideSlides(oldSideSlides);
+        Dispatch(setSlideData({payload:slides,index:len+1,text:"Create"}));
         };
 
     const addMenuHandle=()=>{
@@ -72,36 +138,9 @@ const CreatePPT=()=>{
         setAnchorEl(null);
     }
 
-    const updateMainSlide=(idx)=>{
-       const temp=SlidesName[idx];
-       setCurrentSlide(temp);
-    }
-
-   
-    const getSlide=(title)=>{
-
-        if(String(title)==='Title')
-            return 0;
-        else if(String(title)==='Heading')
-            return 1;
-        else if(String(title)==='Media')
-            return 2;
-        else if(String(title)==='HeadingMultiMedia')
-            return 3;
-        else if(String(title)==='HeadingMultiMediaHor')
-            return 4;
-            else if(String(title)==='HeadingandMedia')
-            return 5;
-        else
-            return 6;
-    };
-
     const showSlides=()=>{
-        const temp=slides.map((key,index)=>{
-             const slide=key.title;
-             const idx=getSlide(slide);
-             const slidesContent=SideSlidesName[idx];
-             return slidesContent;
+        const temp=sideSlides.map((key,index)=>{
+            return key.data;
         });
         return temp;
     };
@@ -162,7 +201,9 @@ const CreatePPT=()=>{
                     </Menu>  
       </Box>
       <Box sx={{width:'88%',height:654,backgroundColor:'yellow'}}>
-      <Box sx={{marginTop:'40px',marginLeft:'40px', backgroundColor:'red',width:'94%',height:'90%'}}>{currentSlide}</Box>
+      <Box sx={{marginTop:'40px',marginLeft:'40px', backgroundColor:'red',width:'94%',height:'90%'}}>
+      {currentSlide}
+      </Box>
       </Box>
       <Box sx={{width:'5%',height:654,backgroundColor:'green'}}>
       sidebar for color theme recording and adding

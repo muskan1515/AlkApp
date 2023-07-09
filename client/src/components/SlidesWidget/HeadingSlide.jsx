@@ -1,12 +1,12 @@
 import { Box, TextField, Menu,MenuItem } from '@mui/material';
-import {useState} from 'react';
+import {useState,useRef} from 'react';
 import ImageIcon from '@mui/icons-material/Image';
 import { TextareaAutosize } from '@material-ui/core';
 
 let ans='';
 const propheight=900;
 
-const HeadingSlide=({updatedHeight,updatedWidth,content})=>{
+const HeadingSlide=({idx,updatedHeight,updatedWidth,content})=>{
 //props.height is going for box height
     
     const [elements,setElements]=useState(content?content:[{
@@ -15,8 +15,11 @@ const HeadingSlide=({updatedHeight,updatedWidth,content})=>{
         content:'Heading'
     }]);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorImageEl, setImageAnchorEl] = useState(null);
     const [selectedWidget,setWidgets]=useState(null);
     const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
+    const [BackdropVisibility,setBackdropVisbility]=useState(false);
+    const browseRef=useRef(null);
 
     const removeWidgets=()=>{
         const idx=selectedWidget;

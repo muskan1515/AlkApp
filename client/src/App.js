@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import {BrowserRouter,Route,Routes,Navigate} from 'react-router-dom'
 import {GoogleOAuthProvider} from '@react-oauth/google';
+import { Provider } from 'react-redux';
 
 import FrontView from './components/FrontView/FrontView';
 import Login from './components/Authentication/Login';
@@ -13,11 +14,13 @@ import HeadingMultiMediasSlide from './components/SlidesWidget/HeadingMultiMedia
 import CreatePPT from './components/CreatePPT/CreatePPT';
 import TitleSlide from './components/SlidesWidget/TitleSlide';
 import { Backdrop } from '@mui/material';
+import store from './redux/store';
 
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
 function App() {
   return (
+    <Provider store={store}>
     <GoogleOAuthProvider clientId={clientId}>
       <div className="App">
       <BrowserRouter>
@@ -34,6 +37,7 @@ function App() {
       </BrowserRouter>
       </div>
     </GoogleOAuthProvider>
+    </Provider>
     
   );
 }

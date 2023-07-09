@@ -9,7 +9,7 @@ const propheight=900;
 const HeadingMultiMediasSlide=({updatedHeight,updatedWidth,content})=>{
 //props.height is going for box height
     
-    const [Upperelements,setUpperElements]=useState([{
+    const [Upperelements,setUpperElements]=useState(content?content:[{
         id:1,
         row:1,
         type:'text',

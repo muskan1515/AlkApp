@@ -7,9 +7,10 @@ const openaiRoutes=require('./Routes/openAi');
 const { buildSchema } = require('graphql');
 const dotenv=require('dotenv').config();
 
-//graphql
-const {graphqlHTTP}=require('express-graphql');
-const schema = require('./graphQL/schema/schema');
+// //graphql 
+// const {graphqlHTTP}=require('express-graphql');
+// const schema = require('./graphQL/schema/schema');
+// const resolver = require('./graphQL/resolver/index');
 
 
 const app=express();
@@ -33,13 +34,11 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use('/auth',authController);
 app.use('/openAI',openaiRoutes);
 
+
+//graphql implementation
 // app.use('/graphql',graphqlHTTP({
-//   schema: schema
-//   ,
-//   rootValue:{
-//     hello:()=>"Helloworld",
-//     greet:({name})=>`heelo ${name}`
-//   },
+//   schema: schema,
+//   rootValue:resolver,
 //   graphiql:true}));
 
 

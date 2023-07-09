@@ -1,16 +1,16 @@
 import { Box, TextField, Menu,MenuItem } from '@mui/material';
 import {useRef, useState} from 'react';
 import ImageIcon from '@mui/icons-material/Image';
-import { TextareaAutosize } from '@material-ui/core';
+import { useSelector,useDispatch } from 'react-redux';
 
-import {generateImages} from '../Generator/Generator';
 import BackdropBox from '../helper/Backdrop';
+import { setSlideData } from '../../redux/reducers/slideSlice';
 
 let ans='';
-
-const TitleSlide=({updatedHeight,updatedWidth,backdrop,content})=>{
-//props.height is going for box height
+const TitleSlide=({idx,updatedHeight,updatedWidth,content})=>{
     
+   
+    const Dispatch=useDispatch();
     const [elements,setElements]=useState(content?content:[{
         id:1,
         type:'text',
@@ -25,6 +25,7 @@ const TitleSlide=({updatedHeight,updatedWidth,backdrop,content})=>{
     const [BackdropVisibility,setBackdropVisbility]=useState(false);
     const browseRef=useRef(null);
 
+
     const removeWidgets=()=>{
         const idx=selectedWidget;
         const temp=elements;
@@ -34,7 +35,6 @@ const TitleSlide=({updatedHeight,updatedWidth,backdrop,content})=>{
         });
         setElements(updatedEle);
         handleClose();
-
     }
 
     const removeBackdrop=()=>{
@@ -62,6 +62,7 @@ const TitleSlide=({updatedHeight,updatedWidth,backdrop,content})=>{
             };
         }
         setElements(updatedElement);
+        Dispatch(setSlideData({payload:{data:elements,index:idx,text:"title"}}));
     };
 
     const addWidgets=()=>{
@@ -126,6 +127,29 @@ const TitleSlide=({updatedHeight,updatedWidth,backdrop,content})=>{
         setBackdropVisbility(true);
     };
 
+    const browseImage=()=>{
+        const file=browseRef.current.files[0];
+        const reader=new FileReader();
+        let imageURL='';
+        reader.onload=(e)=>{
+            imageURL=e.target.result;
+            const oldEle=elements;
+            const updated=oldEle[selectedWidget];
+            oldEle[selectedWidget]={
+                id:updated.id,
+                type:updated.type,
+                content:<img src={imageURL} width={'100%'} height={'100%'}/>
+            };
+            setElements(oldEle);
+            Dispatch(setSlideData({payload:{data:elements,index:idx}}));
+        }
+        reader.onerror=(e)=>{
+            console.error("There is an error",e);
+        }
+        reader.readAsDataURL(file);
+       
+    }
+
     const showMember=()=>{
         const width=updatedWidth/elements.length;
         ans=elements.map((key,index)=>{
@@ -144,7 +168,7 @@ const TitleSlide=({updatedHeight,updatedWidth,backdrop,content})=>{
                 justifyContent: 'center',
                 alignItems: 'center',borderStyle:'double' ,borderColor:'black'}}  key={index}>
                    
-                    <ImageIcon sx={{width:'50%',height:'50%'}}/>
+                   { key.content?key.content:<ImageIcon sx={{width:'50%',height:'50%'}}/>}
                     </Box>
             }
         })
@@ -171,8 +195,16 @@ const TitleSlide=({updatedHeight,updatedWidth,backdrop,content})=>{
         open={Boolean(anchorImageEl)}
         onClose={handleImageMenuClose}
       >
-        <MenuItem type='file'>Browse</MenuItem> 
-        <TextField inputRef={browseRef} sx={{visibility:'hidden',height:'2px'}}/>
+        <MenuItem variant="contained"
+        component="label" >Browse
+        <input
+            ref={browseRef}
+            hidden
+            type='file'
+            onChange={browseImage}
+        />
+        </MenuItem> 
+        
         <MenuItem onClick={generateImage}>Generate Image</MenuItem>
       </Menu>
       {BackdropVisibility ? <BackdropBox removeBackdrop={removeBackdrop} change={BackdropVisibility} setBackdropVisibility={setBackdropVisbility}/>:''}

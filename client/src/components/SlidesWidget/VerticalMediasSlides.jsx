@@ -1,15 +1,16 @@
 import { Box, TextField, Menu,MenuItem } from '@mui/material';
-import {useState} from 'react';
+import {useState,useRef} from 'react';
 import ImageIcon from '@mui/icons-material/Image';
 import { TextareaAutosize } from '@material-ui/core';
 
+import BackdropBox from '../helper/Backdrop';
 let ans='';
 const propheight=900;
 
 const VerticalMediasSlide=({updatedHeight,updatedWidth,content})=>{
 //props.height is going for box height
     
-    const [elements,setElements]=useState([{
+    const [elements,setElements]=useState(content?content:[{
         id:1,
         type:'media',
         content:<ImageIcon/>
@@ -25,8 +26,11 @@ const VerticalMediasSlide=({updatedHeight,updatedWidth,content})=>{
         content:<ImageIcon/>
     }]);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorImageEl, setImageAnchorEl] = useState(false);
     const [selectedWidget,setWidgets]=useState(null);
     const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
+     const [BackdropVisibility,setBackdropVisbility]=useState(false);
+    const browseRef=useRef(null);
 
     const removeWidgets=()=>{
         const idx=selectedWidget;
@@ -69,11 +73,74 @@ const VerticalMediasSlide=({updatedHeight,updatedWidth,content})=>{
         const widget={
             id:selectedWidget+1,
             type:'text',
-            content:'Heading'
+            contentTitle:'Title',
+            contentPara:'Paragraph'
         };
         newEle.splice(selectedWidget+1,0,widget);
         setElements(newEle);
         setAnchorEl(null);
+    }
+
+    const onChangeHandler=(event,index,val)=>{
+        const changeText=event.target.value;
+        const updatedElement=[...elements];
+        const ele=updatedElement[index];
+        if(val==0){
+            updatedElement[index]={
+                id:index+1,
+                type:'text',
+                contentTitle:changeText,
+                contentPara:ele.contentPara
+            };
+        }
+        else{
+            updatedElement[index]={
+                id:index+1,
+                type:'text',
+                contentTitle:ele.contentTitle,
+                contentPara:changeText
+            };
+        }
+        setElements(updatedElement);
+    };
+
+    const handleMenuImage=(event,index)=>{
+        setWidgets(index);
+        setImageAnchorEl(true);
+    }
+
+    const handleImageMenuClose=()=>{
+        setImageAnchorEl(null);
+    };
+
+    const generateImage=()=>{
+        setBackdropVisbility(true);
+    };
+
+    const removeBackdrop=()=>{
+        setBackdropVisbility(false);
+    }
+
+    const browseImage=()=>{
+        const file=browseRef.current.files[0];
+        const reader=new FileReader();
+        let imageURL='';
+        reader.onload=(e)=>{
+            imageURL=e.target.result;
+            const oldEle=elements;
+            const updated=oldEle[selectedWidget];
+            oldEle[selectedWidget]={
+                id:updated.id,
+                type:updated.type,
+                content:<img src={imageURL} width={'100%'} height={'100%'}/>
+            };
+            setElements(oldEle);
+        }
+        reader.onerror=(e)=>{
+            console.error("There is an error",e);
+        }
+        reader.readAsDataURL(file);
+       
     }
 
     const handleContextMenu=(event,index)=>{
@@ -98,17 +165,17 @@ const VerticalMediasSlide=({updatedHeight,updatedWidth,content})=>{
                 justifyContent: 'center',
                 alignItems: 'center',borderStyle:'double' ,borderColor:'black'}} key={index}>
                 
-                    <TextField sx={{height:'30%',width:'40%'}} minRows='3' placeholder={key.content}></TextField>
-                    <TextField sx={{height:'30%',width:'40%',paddingTop:'-20%'}} minRows='3' placeholder='paragrph'></TextField>
+                    <TextField sx={{height:'30%',width:'40%'}} minRows='3' onChange={(event)=>onChangeHandler(event,index,0)} placeholder={key.contentTitle}></TextField>
+                    <TextField sx={{height:'30%',width:'40%',paddingTop:'-20%'}} minRows='3' onChange={(event)=>onChangeHandler(event,index,1)} placeholder={key.contentPara}></TextField>
                
                 </Box>
             }
             else{
-                return <Box onContextMenu={(event)=>handleContextMenu(event,index)} sx={{width:`${width}%`,height:updatedHeight,backgroundColor:'#87CEFA',display: 'flex',flexDirection:'column',
+                return <Box onContextMenu={(event)=>handleContextMenu(event,index)} onClick={(event)=>handleMenuImage(event,index)} sx={{width:`${width}%`,height:updatedHeight,backgroundColor:'#87CEFA',display: 'flex',flexDirection:'column',
                 justifyContent: 'center',
                 alignItems: 'center',borderStyle:'double' ,borderColor:'black'}}  key={index}>
                    
-                    <ImageIcon sx={{width:'50%',height:'50%'}}/>
+                { key.content?key.content:<ImageIcon sx={{width:'50%',height:'50%'}}/>}
                     </Box>
             }
         })
@@ -128,6 +195,25 @@ const VerticalMediasSlide=({updatedHeight,updatedWidth,content})=>{
         <MenuItem onClick={removeWidgets}>Delete</MenuItem>
         <MenuItem onClick={addWidgets}>Duplicate</MenuItem>
       </Menu>
+      <Menu
+      anchorEl={anchorImageEl}
+      open={Boolean(anchorImageEl)}
+      onClose={handleImageMenuClose}
+    >
+      <MenuItem variant="contained"
+      component="label" >Browse
+      <input
+          ref={browseRef}
+          hidden
+          type='file'
+          onChange={browseImage}
+      />
+      </MenuItem> 
+      
+      <MenuItem onClick={generateImage}>Generate Image</MenuItem>
+    </Menu>
+    {BackdropVisibility ? <BackdropBox removeBackdrop={removeBackdrop} change={BackdropVisibility} setBackdropVisibility={setBackdropVisbility}/>:''}
+     
         </Box>
     );
 }
